@@ -32,6 +32,12 @@ AudioControlSGTL5000     sgtl5000_1;     //xy=154,61
 // GUItool: end automatically generated code
 
 
+// TESTING - define CC number for 4 CCs to control frequency
+#define CC1 3
+#define CC2 2
+#define CC3 1
+#define CC4 0
+
 // Use these with the Teensy Audio Shield
 #define SDCARD_CS_PIN    10
 #define SDCARD_MOSI_PIN  7
@@ -108,22 +114,22 @@ void myAfterTouchPoly(byte channel, byte note, byte velocity) {
 
 void myControlChange(byte channel, byte control, byte value) {
     switch (control) {
-      case 3:
+      case CC1:
         // change freq 1  
         waveformMod1.frequency(value*2);
         Serial.println("cc1");
         break;
-      case 2:
+      case CC2:
       	// change freq 2	
       	waveformMod2.frequency(value*2);
          Serial.println("cc2");
        break;
-      case 1:
+      case CC3:
         // change freq 3
         waveformMod3.frequency(value*2);
          Serial.println("cc3");
        break;
-      case 0:
+      case CC4:
         // change freq 4
         waveformMod4.frequency(value*2);
          Serial.println("cc4");
