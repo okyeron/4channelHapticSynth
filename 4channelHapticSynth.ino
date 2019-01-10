@@ -47,7 +47,7 @@ void setup() {
 	usbMIDI.setHandleNoteOff(myNoteOff);
 	usbMIDI.setHandleAfterTouchPoly(myAfterTouchPoly);
 	usbMIDI.setHandleControlChange(myControlChange);
-	usbMIDI.setHandleProgramChange(myProgramChange);
+//	usbMIDI.setHandleProgramChange(myProgramChange);
 	usbMIDI.setHandleAfterTouchChannel(myAfterTouchChannel);
 	usbMIDI.setHandlePitchChange(myPitchChange);
 	usbMIDI.setHandleRealTimeSystem(myRealTimeSystem);
@@ -62,11 +62,15 @@ void setup() {
 	sgtl5000_2.enable();
 	sgtl5000_2.volume(0.5);
 
+  amp1.gain(1);
+  amp2.gain(1);
+  amp3.gain(1);
+  amp4.gain(1);
 
 	// Configure for middle C (261.63) note without modulation ?
 	float default_freq = 261.63;
-  	current_waveform = WAVEFORM_SQUARE;
-  	waveformMod1.begin(1.0, default_freq, current_waveform);
+  current_waveform = WAVEFORM_TRIANGLE;
+  waveformMod1.begin(1.0, default_freq, current_waveform);
 	waveformMod2.begin(1.0, default_freq, current_waveform);
 	waveformMod3.begin(1.0, default_freq, current_waveform);
 	waveformMod4.begin(1.0, default_freq, current_waveform);
@@ -75,15 +79,15 @@ void setup() {
   //waveformMod1.phaseModulation(720.0);
   
   
-	SPI.setMOSI(SDCARD_MOSI_PIN);
-	SPI.setSCK(SDCARD_SCK_PIN);
-	if (!(SD.begin(SDCARD_CS_PIN))) {
+//	SPI.setMOSI(SDCARD_MOSI_PIN);
+//	SPI.setSCK(SDCARD_SCK_PIN);
+//	if (!(SD.begin(SDCARD_CS_PIN))) {
 	// stop here, but print a message repetitively
-	while (1) {
-	  Serial.println("Unable to access the SD card");
-	  delay(500);
-	}
-	}
+//	while (1) {
+//	  Serial.println("Unable to access the SD card");
+//	  delay(500);
+//	}
+//	}
 }
 
 // MAIN LOOP
@@ -104,10 +108,27 @@ void myAfterTouchPoly(byte channel, byte note, byte velocity) {
 
 void myControlChange(byte channel, byte control, byte value) {
     switch (control) {
-      case 16:
-      	// change freq 1
-      	
-      	waveformMod1.frequency(value*2);
+      case 3:
+        // change freq 1  
+        waveformMod1.frequency(value*2);
+        Serial.println("cc1");
+        break;
+      case 2:
+      	// change freq 2	
+      	waveformMod2.frequency(value*2);
+         Serial.println("cc2");
+       break;
+      case 1:
+        // change freq 3
+        waveformMod3.frequency(value*2);
+         Serial.println("cc3");
+       break;
+      case 0:
+        // change freq 4
+        waveformMod4.frequency(value*2);
+         Serial.println("cc4");
+       break;
+      default:
         break;
     }
 }
